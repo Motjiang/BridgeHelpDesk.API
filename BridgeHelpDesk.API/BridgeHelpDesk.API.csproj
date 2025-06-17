@@ -25,9 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\AuditTrail\Commands\" />
-    <Folder Include="Features\AuditTrail\Handlers\" />
-    <Folder Include="Features\AuditTrail\Queries\" />
     <Folder Include="Hubs\AuditTrail\" />
   </ItemGroup>
 

@@ -40,7 +40,7 @@ namespace BridgeHelpDesk.API.Features.Tickets.Handlers
                 Title = request.Title,
                 Description = request.Description,
                 Department = request.Department,
-                Status = request.Status,
+                Status = "Resolved",
                 ResolvedDate = DateTime.Now,
                 ResolvedBy = user.Id
             };
