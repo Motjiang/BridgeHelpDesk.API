@@ -44,7 +44,7 @@ namespace BridgeHelpDesk.API.Features.Ticket.Handlers
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync(cancellationToken);
 
-            // Optionally, you can log an audit trail here if needed
+            // Log the action in the audit trail 
             var auditTrail = new Models.Domain.AuditTrail
             {                
                 Action = "Created",

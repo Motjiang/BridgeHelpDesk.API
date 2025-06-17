@@ -51,5 +51,16 @@ namespace BridgeHelpDesk.API.Controllers
 
             return Ok(tickets);
         }
+
+        [HttpGet("get-ticket/{ticketId}")]
+        public async Task<IActionResult> GetTicketById(int ticketId)
+        {
+            var ticket = await _mediator.Send(new GetTicketByIdQuery(ticketId));
+
+            if (ticket == null)
+                return NotFound($"Ticket with ID {ticketId} not found.");
+
+            return Ok(ticket);
+        }
     }
 }
