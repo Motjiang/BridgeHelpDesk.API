@@ -1,4 +1,5 @@
 ﻿using BridgeHelpDesk.API.Features.Ticket.Commands;
+using BridgeHelpDesk.API.Features.Tickets.Commands;
 using BridgeHelpDesk.API.Features.Tickets.Queries;
 using BridgeHelpDesk.API.Models.Domain;
 using MediatR;
@@ -61,6 +62,19 @@ namespace BridgeHelpDesk.API.Controllers
                 return NotFound($"Ticket with ID {ticketId} not found.");
 
             return Ok(ticket);
+        }
+
+        [HttpPut("update-ticket/{ticketId}")]
+        public async Task<IActionResult> UpdateTicket(int ticketId, [FromBody] UpdateTicketCommand command)
+        {
+            if (command == null || command.TicketId != ticketId)
+                return BadRequest("Invalid ticket data.");
+                        
+            var result = await _mediator.Send(command);
+            if (!result)
+                return NotFound($"Ticket with ID {ticketId} not found or could not be updated.");
+
+            return Ok();
         }
     }
 }
