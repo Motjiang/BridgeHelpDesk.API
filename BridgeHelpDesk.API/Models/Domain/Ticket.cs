@@ -15,5 +15,7 @@ namespace BridgeHelpDesk.API.Models.Domain
         public DateTime CreatedAt { get; set; }
         public DateTime? ResolvedDate { get; set; }
         public string? ResolvedBy { get; set; }
+        public DateTime? RemovedDate { get; set; }
+        public string? RemovedBy { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace BridgeHelpDesk.API.Features.Tickets.Handlers
 
         public async Task<IEnumerable<Models.Domain.Ticket>> Handle(GetAllTicketsQuery request, CancellationToken cancellationToken)
         {
-           return await _context.Tickets.ToListAsync(cancellationToken);
+           return await _context.Tickets.Where(t => t.Status != "Deleted").ToListAsync(cancellationToken);
         }
     }
 }

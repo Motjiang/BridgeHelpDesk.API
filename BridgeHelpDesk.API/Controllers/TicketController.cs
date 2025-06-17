@@ -69,12 +69,22 @@ namespace BridgeHelpDesk.API.Controllers
         {
             if (command == null || command.TicketId != ticketId)
                 return BadRequest("Invalid ticket data.");
-                        
+
             var result = await _mediator.Send(command);
             if (!result)
                 return NotFound($"Ticket with ID {ticketId} not found or could not be updated.");
 
             return Ok();
+        }
+
+        [HttpPatch("delete-ticket/{ticketId}")]
+        public async Task<IActionResult> DeleteTicket(int ticketId)
+        {
+            var result = await _mediator.Send(new DeleteTicketCommand(ticketId));
+            if (!result)
+                return NotFound($"Ticket with ID {ticketId} not found or could not be deleted.");
+
+            return NoContent();
         }
     }
 }

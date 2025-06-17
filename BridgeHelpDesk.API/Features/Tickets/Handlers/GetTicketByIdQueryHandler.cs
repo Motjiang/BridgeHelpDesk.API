@@ -14,7 +14,7 @@ namespace BridgeHelpDesk.API.Features.Tickets.Handlers
         }
         public async Task<Models.Domain.Ticket> Handle(GetTicketByIdQuery request, CancellationToken cancellationToken)
         {
-            var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == request.TicketId, cancellationToken);
+            var ticket = await _context.Tickets.Where(t => t.Status != "Deleted").FirstOrDefaultAsync(t => t.Id == request.TicketId, cancellationToken);
 
             return ticket;
         }
