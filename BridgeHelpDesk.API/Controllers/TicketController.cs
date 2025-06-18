@@ -42,6 +42,18 @@ namespace BridgeHelpDesk.API.Controllers
             return CreatedAtAction(nameof(LogTicket), new { id = ticketId }, null);
         }
 
+        [Authorize(Roles = "Technician")]
+        [HttpGet("get-resolved-tickets")]
+        public async Task<IActionResult> GetResolvedTickets()
+        {
+            var tickets = await _mediator.Send(new GetResolovedByTicketsQuery());
+
+            if (tickets == null || !tickets.Any())
+                return NotFound("No resolved tickets found.");
+
+            return Ok(tickets);
+        }
+
         [HttpGet("get-tickets")]
         public async Task<IActionResult> GetTickets()
         {
