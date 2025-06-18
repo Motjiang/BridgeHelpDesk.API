@@ -47,6 +47,7 @@ A backend-focused IT Helpdesk Management System built with **ASP.NET Core 9 Web 
 | MS SQL Server        | Database backend                         |
 | Mailjet              | Email API for password reset             |
 | Microsoft Azure      | Optional deployment & integration        |
+| xUnit                | Unit tests using FakeItEasy and FluentAssertions        |
 | Postman              | API testing and debugging                |
 
 ---
