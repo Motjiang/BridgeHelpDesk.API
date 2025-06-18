@@ -18,6 +18,8 @@ namespace BridgeHelpDesk.API.Features.Notifications.Handlers
         {
             var notifications = await _context.Notifications.Where(n => n.IsRead == false).ToListAsync(cancellationToken);
 
+            var count = notifications.Count;
+
             return notifications;
         }
     }

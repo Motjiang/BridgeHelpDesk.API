@@ -98,5 +98,17 @@ namespace BridgeHelpDesk.API.Controllers
 
             return NoContent();
         }
+
+        [Authorize(Roles = "Technician")]
+        [HttpGet("get-dashboard-summary")]
+        public async Task<IActionResult> GetDashboardSummary()
+        {
+            var summary = await _mediator.Send(new TechnicianDashboardQuery());
+
+            if (summary == null)
+                return NotFound("Dashboard summary not found.");
+
+            return Ok(summary);
+        }
     }
 }
