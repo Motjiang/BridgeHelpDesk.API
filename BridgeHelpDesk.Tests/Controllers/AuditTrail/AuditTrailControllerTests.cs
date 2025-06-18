@@ -61,5 +61,71 @@ namespace BridgeHelpDesk.UnitTests.Controllers.AuditTrail
             okResult!.StatusCode.Should().Be(200);
             okResult.Value.Should().BeEquivalentTo(auditTrails);
         }
+
+        [Fact]
+        public async Task GetAuditTrails_ReturnsNotFound_WhenListIsEmpty()
+        {
+            // Arrange
+            A.CallTo(() => _sender.Send(A<GetAllAuditTrailsQuery>._, A<CancellationToken>._))
+                .Returns(Task.FromResult(Enumerable.Empty<API.Models.Domain.AuditTrail>()));
+
+            // Act
+            var result = await _controller.GetAuditTrails();
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+            var notFound = result as NotFoundObjectResult;
+            notFound!.StatusCode.Should().Be(404);
+            notFound.Value.Should().Be("No audit trails found.");
+        }
+
+        [Fact]
+        public async Task GetAuditTrailById_ReturnsOk_WhenAuditTrailExists()
+        {
+            // Arrange
+            var auditTrail = new API.Models.Domain.AuditTrail
+            {
+                Id = 1,
+                Action = "Create",
+                TableAffected = "Tickets",
+                Timestamp = DateTime.Now,
+                ApplicationUserId = "0001",
+                ApplicationUser = new API.Models.Domain.ApplicationUser
+                {
+                    Id = "0001",
+                    UserName = "testuser"
+                }
+            };
+
+            A.CallTo(() => _sender.Send(A<GetAuditTrailByIdQuery>.That.Matches(q => q.AuditTrailId == 1),
+                A<CancellationToken>._))
+             .Returns(auditTrail); // Return single object
+
+            // Act
+            var result = await _controller.GetAuditTrailById(1);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+            var okResult = result as OkObjectResult;
+            okResult!.StatusCode.Should().Be(200);
+            okResult.Value.Should().BeEquivalentTo(auditTrail); // Deep compare
+        }
+
+        [Fact]
+        public async Task GetAuditTrailById_ReturnsNotFound_WhenAuditTrailDoesNotExist()
+        {
+            // Arrange
+            A.CallTo(() => _sender.Send(A<GetAuditTrailByIdQuery>.That.Matches(q => q.AuditTrailId == 99), A<CancellationToken>._))
+                .Returns(Task.FromResult<API.Models.Domain.AuditTrail>(null));
+
+            // Act
+            var result = await _controller.GetAuditTrailById(99);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+            var notFound = result as NotFoundObjectResult;
+            notFound!.StatusCode.Should().Be(404);
+            notFound.Value.Should().Be("Audit trail with ID 99 not found.");
+        }
     }
 }
