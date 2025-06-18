@@ -19,10 +19,22 @@ namespace BridgeHelpDesk.API.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Technician")]
         [HttpGet("get-all-notifications")]
         public async Task<IActionResult> GetAllNotifications()
         {
             var notifications = await _mediator.Send(new GetAllNotificationsQuery());
+
+            if (notifications == null || !notifications.Any())
+                return NotFound("No notifications found.");
+
+            return Ok(notifications);
+        }
+
+        [HttpGet("get-notifications")]
+        public async Task<IActionResult> GetNotifications()
+        {
+            var notifications = await _mediator.Send(new GetAllNotificationForAllQuery());
 
             if (notifications == null || !notifications.Any())
                 return NotFound("No notifications found.");
