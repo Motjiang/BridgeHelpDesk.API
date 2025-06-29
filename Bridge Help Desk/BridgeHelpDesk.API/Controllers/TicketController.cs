@@ -82,7 +82,9 @@ namespace BridgeHelpDesk.API.Controllers
             if (command == null || command.TicketId != ticketId)
                 return BadRequest("Invalid ticket data.");
 
-            var result = await _mediator.Send(command);
+            var newCommand = command with { TicketId = ticketId };
+
+            var result = await _mediator.Send(newCommand);
             if (!result)
                 return NotFound($"Ticket with ID {ticketId} not found or could not be updated.");
 

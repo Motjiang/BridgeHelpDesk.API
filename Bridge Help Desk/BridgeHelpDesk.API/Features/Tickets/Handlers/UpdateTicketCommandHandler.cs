@@ -34,18 +34,18 @@ namespace BridgeHelpDesk.API.Features.Tickets.Handlers
 
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
-            var updatedTicket = new Models.Domain.Ticket
+            if (ticket == null || user == null)
             {
-                Id = request.TicketId,
-                Title = request.Title,
-                Description = request.Description,
-                Department = request.Department,
-                Status = "Resolved",
-                ResolvedDate = DateTime.Now,
-                ResolvedBy = user.Id
-            };
+                return false; // Ticket or user not found
+            }
 
-            _context.Tickets.Update(updatedTicket);
+            // Update the ticket properties
+            ticket.Title = request.Title;
+            ticket.Description = request.Description;
+            ticket.Department = request.Department;
+            ticket.ResolvedBy = user.Id;
+            ticket.ResolvedDate = DateTime.Now;
+
             await _context.SaveChangesAsync(cancellationToken);
 
             // Log the action in the audit trail

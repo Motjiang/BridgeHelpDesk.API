@@ -32,18 +32,10 @@ namespace BridgeHelpDesk.API.Features.Tickets.Handlers
 
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
-            var deletedTicket = new Models.Domain.Ticket
-            {
-                Id = request.ticketId,
-                Title = ticket.Title,
-                Description = ticket.Description,
-                Department = ticket.Department,
-                Status = "Deleted",
-                ResolvedDate = DateTime.Now,
-                ResolvedBy = user.Id
-            };
+            ticket.Status = "Deleted";
+            ticket.RemovedBy = user.Id;
+            ticket.RemovedDate = DateTime.Now;
 
-            _context.Tickets.Update(deletedTicket);
             await _context.SaveChangesAsync(cancellationToken);
 
             // Log the action in the audit trail
