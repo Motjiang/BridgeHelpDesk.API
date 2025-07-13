@@ -54,6 +54,6 @@ This backend project provides a Help Desk Management System where:
 
 ## ☁️ Deployment
 
-- The API is deployed on **Azure App Service** for scalable and reliable cloud hosting  
+- The API will soon be deployed on **Azure App Service** for scalable and reliable cloud hosting  
 
 ---
